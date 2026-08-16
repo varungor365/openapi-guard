@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openapi-guard"
+version = "0.1.0"
+description = "Detect structural breaking changes between OpenAPI 3 documents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "Varun Ruhella"}]
+dependencies = ["PyYAML>=6.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+openapi_guard = "openapi_guard.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["openapi_guard*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
