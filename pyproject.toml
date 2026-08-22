@@ -16,6 +16,7 @@ dependencies = ["PyYAML>=6.0"]
 dev = ["pytest>=8.0"]
 
 [project.scripts]
+openapi-guard = "openapi_guard.cli:main"
 openapi_guard = "openapi_guard.cli:main"
 
 [tool.setuptools.packages.find]
