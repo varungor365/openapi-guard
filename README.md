@@ -8,8 +8,8 @@
 
 ```bash
 pipx install openapi-guard
-openapi-guard openapi.yml openapi.next.yml
-openapi-guard openapi.json openapi.next.json --format json --fail-on breaking
+openapi_guard openapi.yml openapi.next.yml
+openapi_guard openapi.json openapi.next.json --format json --fail-on breaking
 ```
 
 The command exits non-zero when breaking changes are found and can emit stable JSON for CI annotations. YAML support uses PyYAML; JSON works without YAML syntax.
