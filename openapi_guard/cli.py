@@ -44,8 +44,16 @@ def operations(doc: dict) -> dict[tuple[str, str], dict]:
     return result
 
 
-def required_parameters(operation: dict) -> set[tuple[str, str]]:
-    return {(item.get("in", ""), item.get("name", "")) for item in operation.get("parameters", []) if isinstance(item, dict) and item.get("required")}
+def required_parameters(path_item: dict, operation: dict) -> set[tuple[str, str]]:
+    """Return required parameters inherited from the path item and operation."""
+    parameters = []
+    parameters.extend(path_item.get("parameters") or [])
+    parameters.extend(operation.get("parameters") or [])
+    return {
+        (item.get("in", ""), item.get("name", ""))
+        for item in parameters
+        if isinstance(item, dict) and item.get("required")
+    }
 
 
 def required_body_fields(operation: dict) -> set[str]:
@@ -57,6 +65,8 @@ def required_body_fields(operation: dict) -> set[str]:
 def compare(old: dict, new: dict) -> list[Change]:
     changes: list[Change] = []
     before, after = operations(old), operations(new)
+    old_paths = old.get("paths") or {}
+    new_paths = new.get("paths") or {}
     for key in sorted(before.keys() - after.keys()):
         changes.append(Change("breaking", "removed-operation", f"{key[1].upper()} {key[0]}", "operation was removed"))
     for key in sorted(after.keys() - before.keys()):
@@ -64,7 +74,9 @@ def compare(old: dict, new: dict) -> list[Change]:
     for key in sorted(before.keys() & after.keys()):
         path, method = key
         old_op, new_op = before[key], after[key]
-        added_params = required_parameters(new_op) - required_parameters(old_op)
+        old_item = old_paths.get(path) if isinstance(old_paths.get(path), dict) else {}
+        new_item = new_paths.get(path) if isinstance(new_paths.get(path), dict) else {}
+        added_params = required_parameters(new_item, new_op) - required_parameters(old_item, old_op)
         for location, name in sorted(added_params):
             changes.append(Change("breaking", "new-required-parameter", f"{method.upper()} {path}", f"required {location} parameter '{name}' was added"))
         if not (old_op.get("requestBody") or {}).get("required") and (new_op.get("requestBody") or {}).get("required"):
