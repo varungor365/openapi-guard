@@ -18,3 +18,17 @@ def test_new_required_parameter_is_breaking():
 def test_added_operation_is_non_breaking():
     changes = compare({"paths": {}}, {"paths": {"/health": {"get": {"responses": {"200": {}}}}}})
     assert changes[0].level == "non-breaking"
+
+
+def test_new_required_path_parameter_is_breaking():
+    old = {"paths": {"/users/{user_id}": {"get": {"responses": {"200": {}}}}}}
+    new = {
+        "paths": {
+            "/users/{user_id}": {
+                "parameters": [{"in": "path", "name": "user_id", "required": True}],
+                "get": {"responses": {"200": {}}},
+            }
+        }
+    }
+    changes = compare(old, new)
+    assert any(item.kind == "new-required-parameter" for item in changes)

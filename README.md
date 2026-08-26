@@ -2,7 +2,7 @@
 
 **Catch breaking OpenAPI changes before they reach your consumers.**
 
-`openapi-guard` compares two OpenAPI 3 documents and reports removed operations, removed response codes, newly required request parameters, newly required request bodies, and required request fields that were added to existing schemas. It is a small, CI-friendly complement to full contract-testing platforms.
+`openapi-guard` compares two OpenAPI 3 documents and reports removed operations, removed response codes, newly required request parameters (including parameters inherited from a path item), newly required request bodies, and required request fields that were added to existing schemas. It is a small, CI-friendly complement to full contract-testing platforms.
 
 ## Quick start
 
