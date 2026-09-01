@@ -1,5 +1,7 @@
 # openapi-guard: OpenAPI Breaking-Change Detector
 
+[![CI](https://github.com/varungor365/openapi-guard/actions/workflows/ci.yml/badge.svg)](https://github.com/varungor365/openapi-guard/actions/workflows/ci.yml)
+
 **Catch structural OpenAPI contract changes before they reach your consumers.**
 
 `openapi-guard` is a small, CI-friendly command-line tool for comparing two OpenAPI 3 documents. It reports removed operations, removed successful responses, newly required request parameters, newly required request bodies, and request fields that became required in existing JSON request schemas.
